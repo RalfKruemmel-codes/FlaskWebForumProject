@@ -1,0 +1,10 @@
+<!-- post.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<article>
+    <h2><a href="{{ url_for('post_detail', post_id=post.PostID) }}">{{ post.Title }}</a></h2>
+    <p>{{ post.Content }}</p>
+    <small>Erstellt von {{ post.author.username }} am {{ post.PostDate.strftime('%Y-%m-%d %H:%M:%S') }}</small>
+</article>
+{% endblock %}

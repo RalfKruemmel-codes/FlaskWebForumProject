@@ -1,0 +1,14 @@
+﻿<!-- forum.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+{% for forum in forums %}
+<h2>{{ forum.Name }}</h2>
+<p>{{ forum.Description }}</p>
+<ul>
+    {% for category in forum.categories %}
+    <li><a href="{{ url_for('category', category_id=category.CategoryID) }}">{{ category.Name }}</a></li>
+    {% endfor %}
+</ul>
+{% endfor %}
+{% endblock %}

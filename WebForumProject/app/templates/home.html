@@ -1,0 +1,39 @@
+<!-- home.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>WebForum</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('logout') }}">Abmelden</a></li>
+                {% else %}
+                <li><a href="{{ url_for('login') }}">Anmelden</a></li>
+                <li><a href="{{ url_for('register') }}">Registrieren</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Willkommen im WebForum!</h1>
+        <p>Hier können Sie Diskussionen starten und an Gesprochen teilnehmen.</p>
+        <!-- Weitere Inhalte und Forenstruktur hier einf�gen -->
+    </main>
+
+    <footer>
+        <p>@ 2024 WebForum. Alle Rechte vorbehalten.</p>
+    </footer>
+</body>
+</html>
+
+{% endblock %}

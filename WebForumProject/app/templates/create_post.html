@@ -1,0 +1,13 @@
+<!-- create_post.html -->
+<form method="post">
+    {{ form.hidden_tag() }}
+    <p>
+        {{ form.title.label }}<br>
+        {{ form.title(size=32) }}
+    </p>
+    <p>
+        {{ form.content.label }}<br>
+        {{ form.content(rows=4) }}
+    </p>
+    <p>{{ form.submit() }}</p>
+</form>

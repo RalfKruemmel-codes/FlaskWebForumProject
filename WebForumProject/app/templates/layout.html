@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WebForum{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Weitere Meta-Tags und Ressourcen -->
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('home') }}">Home</a></li>
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('logout') }}">Abmelden</a></li>
+                <li><a href="{{ url_for('account') }}">Profil</a></li>
+                <li><a href="{{ url_for('forum') }}">Forum</a></li>
+                <!-- Der Link zur Kategorieseite benötigt eine CategoryID -->
+                {% if category_id %}
+                <li><a href="{{ url_for('category', category_id=category_id) }}">Kategorie</a></li>
+                {% endif %}
+                {% else %}
+                <li><a href="{{ url_for('login') }}">Anmelden</a></li>
+                <li><a href="{{ url_for('register') }}">Registrieren</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>© {{ current_year }} WebForum. Alle Rechte vorbehalten.</p>
+    </footer>
+</body>
+</html>
+
