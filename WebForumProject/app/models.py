@@ -47,3 +47,6 @@ class Forum(db.Model):
     Name = db.Column(db.String(255), nullable=False)
     Description = db.Column(db.Text)
     categories = db.relationship('Category', backref='forum', lazy='dynamic')
+
+
+

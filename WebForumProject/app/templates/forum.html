@@ -2,13 +2,30 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-{% for forum in forums %}
-<h2>{{ forum.Name }}</h2>
-<p>{{ forum.Description }}</p>
-<ul>
-    {% for category in forum.categories %}
-    <li><a href="{{ url_for('category', category_id=category.CategoryID) }}">{{ category.Name }}</a></li>
+<div class="forum-table">
+    {% for forum in forums %}
+    <div class="forum-category">
+        <h2>{{ forum.Name }}</h2>
+        <p>{{ forum.Description }}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Kategorie</th>
+                    <th>Beiträge</th>
+                    <th>Letzter Beitrag</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in forum.categories %}
+                <tr>
+                    <td><a href="{{ url_for('category', category_id=category.CategoryID) }}">{{ category.Name }}</a></td>
+                    <td>{{ category.PostCount }}</td>
+                    <td>{{ category.LastPostDate }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% endfor %}
-</ul>
-{% endfor %}
+</div>
 {% endblock %}

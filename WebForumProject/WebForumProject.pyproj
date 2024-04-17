@@ -30,6 +30,7 @@
     <Compile Include="app.py" />
     <Compile Include="app\forms.py" />
     <Compile Include="app\models.py" />
+    <Compile Include="app\UpdateAccountForm.py" />
     <Compile Include="app\views.py" />
     <Compile Include="app\__init__.py" />
     <Compile Include="config.py" />
@@ -37,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
+    <Folder Include="app\uploads\" />
     <Folder Include="app\sql\" />
     <Folder Include="app\templates\" />
     <Folder Include="app\static\" />

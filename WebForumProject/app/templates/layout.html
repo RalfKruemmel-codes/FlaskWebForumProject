@@ -1,3 +1,4 @@
+<!-- layout.html -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -22,6 +23,7 @@
                 {% endif %}
                 {% else %}
                 <li><a href="{{ url_for('login') }}">Anmelden</a></li>
+                <li><a href="{{ url_for('register') }}">Registrieren</a></li>
                 <li><a href="{{ url_for('register') }}">Registrieren</a></li>
                 {% endif %}
             </ul>

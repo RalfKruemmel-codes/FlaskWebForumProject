@@ -1,6 +1,8 @@
+# forms.py
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
+from flask_wtf.file import FileField, FileAllowed 
 
 class RegistrationForm(FlaskForm):
     username = StringField('Benutzername', validators=[DataRequired(), Length(min=2, max=20)])
@@ -23,6 +25,7 @@ class UpdateAccountForm(FlaskForm):
 class PostForm(FlaskForm):
     title = StringField('Titel', validators=[DataRequired()])
     content = TextAreaField('Inhalt', validators=[DataRequired()])
+    image = FileField('Bild/GIF hochladen', validators=[FileAllowed(['jpg', 'png', 'gif'], 'Nur Bilder und GIFs!')])
     submit = SubmitField('Beitrag veröffentlichen')
 
 class CommentForm(FlaskForm):
@@ -38,5 +41,11 @@ class ForumForm(FlaskForm):
     name = StringField('Forumname', validators=[DataRequired()])
     description = TextAreaField('Beschreibung')
     submit = SubmitField('Forum erstellen')
+
+class UpdateAccountForm(FlaskForm):
+    Username = StringField('Benutzername', validators=[DataRequired(), Length(min=2, max=20)])
+    Email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Aktualisieren')
+
 
 

@@ -4,10 +4,12 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from config import Config
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'IhrGeheimerSchlüssel'
 app.config.from_object(Config)
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'uploads')
 db = SQLAlchemy(app)
 
 login_manager = LoginManager(app)

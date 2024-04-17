@@ -2,10 +2,19 @@
 
 from flask import render_template, url_for, flash, redirect, request
 from flask_login import login_user, logout_user, current_user, login_required
+from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import app, db
 from app.models import User, Post, Comment, Category, Forum
-from app.forms import RegistrationForm, LoginForm, PostForm, CommentForm
+from app.forms import RegistrationForm, LoginForm, PostForm, CommentForm, UpdateAccountForm
+import os
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @app.route('/')
 @app.route('/home')
@@ -48,21 +57,36 @@ def logout():
 
 
 
-@app.route('/account')
+@app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('account.html', title='Konto')
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Ihr Konto wurde aktualisiert!', 'success')
+        return redirect(url_for('account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    return render_template('account.html', title='Konto', form=form)
+
 
 @app.route('/post/new/<int:category_id>', methods=['GET', 'POST'])
 @login_required
 def new_post(category_id):
+    category = Category.query.get_or_404(category_id)
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(UserID=current_user.UserID, CategoryID=category_id, Title=form.title.data, Content=form.content.data)
+        # Verarbeiten Sie den Inhalt, der vom CKEditor kommt
+        content = request.form['content']
+        post = Post(UserID=current_user.UserID, CategoryID=category.CategoryID, Title=form.title.data, Content=content)
         db.session.add(post)
         db.session.commit()
-        return redirect(url_for('category', category_id=category_id))
-    return render_template('create_post.html', form=form)
+        flash('Der Post wurde erfolgreich erstellt!', 'success')
+        return redirect(url_for('category', category_id=category.CategoryID))
+    return render_template('create_post.html', category=category, form=form)
 
 
 @app.route('/post/<int:post_id>')
@@ -82,3 +106,17 @@ def category(category_id):
     category = Category.query.get_or_404(category_id)
     posts = category.posts  # Alle Posts der Kategorie abrufen
     return render_template('category.html', category=category, posts=posts)
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        flash('Keine Datei Teil der Anfrage')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('Keine ausgewählte Datei')
+        return redirect(request.url)
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return 'Datei erfolgreich hochgeladen'

@@ -1,10 +1,33 @@
-<!-- post.html -->
 {% extends 'layout.html' %}
 
 {% block content %}
-<article>
-    <h2><a href="{{ url_for('post_detail', post_id=post.PostID) }}">{{ post.Title }}</a></h2>
-    <p>{{ post.Content }}</p>
-    <small>Erstellt von {{ post.author.username }} am {{ post.PostDate.strftime('%Y-%m-%d %H:%M:%S') }}</small>
-</article>
+<div class="post-table">
+    <table>
+        <thead>
+            <tr>
+                <th>Titel</th>
+                <th>Inhalt</th>
+                <th>Erstellt von</th>
+                <th>Datum</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><a href="{{ url_for('post_detail', post_id=post.PostID) }}">{{ post.Title }}</a></td>
+                <td>
+                    <!-- Ersetzen Sie die Textarea durch CKEditor -->
+                    <textarea id="content" name="content" class="form-control">{{ post.Content }}</textarea>
+                </td>
+                <td>{{ post.author.username }}</td>
+                <td>{{ post.PostDate.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- CKEditor Skript einbinden -->
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('content');
+</script>
 {% endblock %}
